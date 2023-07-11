@@ -2,9 +2,11 @@ package ru.stqa.pftester.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
+import org.openqa.selenium.WebElement;
 import ru.stqa.pftester.addressbook.model.ContactData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
@@ -24,16 +26,12 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
 
-    public void fillContactForm(ContactData contactData, boolean creation) {
+    public void fillContactForm(ContactData contactData, boolean b) {
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("lastname"), contactData.getLastname());
         type(By.name("mobile"), contactData.getMobile());
         type(By.name("email"), contactData.getEmail());
-        if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-        } else {
-            Assert.assertFalse(isElementPresent(By.name("new_group")));
-        }
+
     }
 
     public void type(By locator, String text) {
@@ -54,8 +52,9 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("//div[@id='content']/form/input[22]"));
     }
 
-    public void selectContact() {
-        click(By.name("selected[]"));
+    public void selectContact(int index) {
+        wd.findElements(By.name("selected[]")).get(index).click();
+
     }
 
     public void deleteSelectContact() {
@@ -66,9 +65,9 @@ public class ContactHelper extends HelperBase {
         wd.switchTo().alert().accept();
     }
 
-    public void createContact(ContactData contact, boolean b) {
+    public void createContact(ContactData contact) {
         initContactCreation();
-        fillContactForm(contact,true);
+        fillContactForm(contact, true);
         submitContactCreation();
         returnToContactPage();
     }
@@ -76,4 +75,24 @@ public class ContactHelper extends HelperBase {
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
     }
+
+    public int getGroupCount() {
+        return wd.findElements(By.name("selected[]")).size();
+    }
+
+    public List<ContactData> getContactList() {
+        List<ContactData> contacts = new ArrayList<ContactData>();
+        List<WebElement> elements = wd.findElements(By.cssSelector("tr.entry"));
+        for (WebElement element : elements) {
+            String firstname = element.getText();
+            String lastname = element.getText();
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
+            ContactData contact =  new ContactData(id, firstname, lastname, "79785678930","tester@gmail.com", "test1");
+            contacts.add(contact);
+        }
+        return contacts;
+    }
 }
+
+
+       
