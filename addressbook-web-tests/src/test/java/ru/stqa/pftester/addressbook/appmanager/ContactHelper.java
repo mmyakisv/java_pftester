@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.pftester.addressbook.model.ContactData;
+import ru.stqa.pftester.addressbook.model.GroupData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void returnToContactPage() {
-        click(By.linkText("home page"));
+        click(By.linkText("home"));
     }
 
     public void click(By locator) {
@@ -72,7 +73,15 @@ public class ContactHelper extends HelperBase {
         returnToContactPage();
     }
 
+    public void selectGroup(int index) {
+        wd.findElements(By.name("selected[]")).get(index).click();
+    }
+
     public boolean isThereAContact() {
+        return isElementPresent(By.name("selected[]"));
+    }
+
+    public boolean isThereAGroup() {
         return isElementPresent(By.name("selected[]"));
     }
 
@@ -82,12 +91,12 @@ public class ContactHelper extends HelperBase {
 
     public List<ContactData> getContactList() {
         List<ContactData> contacts = new ArrayList<ContactData>();
-        List<WebElement> elements = wd.findElements(By.cssSelector("tr.entry"));
+        List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
             String firstname = element.getText();
             String lastname = element.getText();
             int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
-            ContactData contact =  new ContactData(id, firstname, lastname, "79785678930","tester@gmail.com", "test1");
+            ContactData contact =  new ContactData(id, "Avatar", "Avatarovich", "79785678930","tester@gmail.com", "test1");
             contacts.add(contact);
         }
         return contacts;
@@ -95,4 +104,3 @@ public class ContactHelper extends HelperBase {
 }
 
 
-       
