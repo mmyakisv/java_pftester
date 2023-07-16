@@ -9,16 +9,15 @@ import java.util.List;
 
 public class ContactModificationTests extends TestBase {
 
-    @Test(enabled = false)
+    @Test
     public void testContactModification() {
         if (!app.getContactHelper().isThereAContact()) {
-            app.getContactHelper().createContact(new ContactData("Test", "Testov", "78005678930", "tester@gmail.com", "test1"));
+            app.getContactHelper().createContact(new ContactData("Test", "Testov", "78005678930", "tester@gmail.com", null));
         }
         List<ContactData> before = app.getContactHelper().getContactList();
-        app.getContactHelper().selectContact(before.size() - 1);
         app.getContactHelper().initContactModification();
         ContactData contact = new ContactData(before.get(before.size() - 1).getId(), "Avatar", "Avatarovich", "78005678930", "tester@gmail.com", null);
-        app.getContactHelper().fillContactForm(contact, true);
+        app.getContactHelper().fillContactForm(contact);
         app.getContactHelper().submitContactModification();
         app.getContactHelper().returnToContactPage();
         List<ContactData> after = app.getContactHelper().getContactList();

@@ -27,7 +27,7 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
 
-    public void fillContactForm(ContactData contactData, boolean b) {
+    public void fillContactForm(ContactData contactData) {
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("lastname"), contactData.getLastname());
         type(By.name("mobile"), contactData.getMobile());
@@ -68,7 +68,7 @@ public class ContactHelper extends HelperBase {
 
     public void createContact(ContactData contact) {
         initContactCreation();
-        fillContactForm(contact, true);
+        fillContactForm(contact);
         submitContactCreation();
         returnToContactPage();
     }
