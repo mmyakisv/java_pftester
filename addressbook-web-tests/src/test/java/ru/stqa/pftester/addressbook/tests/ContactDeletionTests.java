@@ -3,29 +3,30 @@ package ru.stqa.pftester.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pftester.addressbook.model.ContactData;
+import ru.stqa.pftester.addressbook.model.Contacts;
 import ru.stqa.pftester.addressbook.model.GroupData;
+import ru.stqa.pftester.addressbook.model.Groups;
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
+
 public class ContactDeletionTests extends TestBase {
 
-    @Test(enabled = false)
+    @Test
     public void testContactDeletion() {
-        if (!app.getContactHelper().isThereAContact()) {
-            app.getContactHelper().createContact(new ContactData("Test", "Testov", "78005678930", "tester@gmail.com", null));
-        }
 
-        List<ContactData> before = app.getContactHelper().getContactList();
-        app.getContactHelper().selectContact(before.size() - 1);
-        app.getContactHelper().deleteSelectContact();
-        app.getContactHelper().closeAssertConfirmation();
-        app.getContactHelper().returnToContactPage();
-        List<ContactData> after = app.getContactHelper().getContactList();
-        Assert.assertEquals(after.size(), before.size() - 1);
+        Contacts before = app.contact().all();
+        ContactData deletedContact = before.iterator().next();
+        app.contact().delete(deletedContact);
+        Contacts after = app.contact().all();
+        assertEquals(after.size(), before.size() - 1);
 
-        before.remove(before.size() - 1);
-        Assert.assertEquals(before, after);
-
+        assertThat(after, equalTo(before.without(deletedContact)));
     }
 
 }
+
+
