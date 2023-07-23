@@ -1,5 +1,6 @@
 package ru.stqa.pftester.addressbook.tests;
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pftester.addressbook.model.ContactData;

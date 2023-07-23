@@ -11,6 +11,7 @@ import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
+
     public ContactHelper(WebDriver wd) {
         super(wd);
     }
@@ -107,9 +108,10 @@ public class ContactHelper extends HelperBase {
         Contacts contacts = new Contacts();
         List<WebElement> elements = wd.findElements(By.name("entry"));
         for (WebElement element : elements) {
-            String firstname = element.getText();
-            String lastname = element.getText();
-            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
+            List<WebElement> cells = element.findElements(By.tagName("td"));
+            String lastname = cells.get(1).getText();
+            String firstname = cells.get(2).getText();
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
             contacts.add(new ContactData().withId(id).withFirstName(firstname).withLastName(lastname));
         }
         return contacts;
