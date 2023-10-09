@@ -3,7 +3,6 @@ package ru.stqa.pftester.sandbox;
 import org.junit.jupiter.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 
 public class TriangleTests {
 
@@ -73,5 +72,18 @@ public class TriangleTests {
         } catch (IllegalArgumentException exception) {
             System.out.println("The sum of any two sides must not be less than the third");
         }
+    }
+
+    @Test
+    public void testEquality() {
+        Triangle t1 = new Triangle (6, 9, 14);
+        Triangle t2 = new Triangle (9, 14, 6);
+    Assertions.assertEquals (t1, t2);
+    }
+    @Test
+    public void testEquality1() {
+        Triangle t1 = new Triangle (6, 9, 14);
+        Triangle t2 = new Triangle (14, 6, 9);
+        Assertions.assertEquals (t1, t2);
     }
 }
