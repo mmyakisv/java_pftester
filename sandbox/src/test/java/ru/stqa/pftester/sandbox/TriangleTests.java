@@ -46,6 +46,7 @@ public class TriangleTests {
             System.out.println("Triangle side should be non-negative");
         }
     }
+
     @Test
     void cannotCreateTriangleWithNegativeSide2() {
         try {
@@ -55,6 +56,7 @@ public class TriangleTests {
             System.out.println("Triangle side should be non-negative");
         }
     }
+
     @Test
     void cannotCreateTriangleWithNegativeSide3() {
         try {
@@ -64,6 +66,7 @@ public class TriangleTests {
             System.out.println("Triangle side should be non-negative");
         }
     }
+
     @Test
     void cannotCreateTriangleWithSumBothSides() {
         try {
@@ -76,14 +79,36 @@ public class TriangleTests {
 
     @Test
     public void testEquality() {
-        Triangle t1 = new Triangle (6, 9, 14);
-        Triangle t2 = new Triangle (9, 14, 6);
-    Assertions.assertEquals (t1, t2);
+        Triangle t1 = new Triangle(6, 9, 14);
+        Triangle t2 = new Triangle(9, 14, 6);
+        Assertions.assertEquals(t1, t2);
     }
+
     @Test
     public void testEquality1() {
-        Triangle t1 = new Triangle (6, 9, 14);
-        Triangle t2 = new Triangle (14, 6, 9);
-        Assertions.assertEquals (t1, t2);
+        Triangle t1 = new Triangle(6, 9, 14);
+        Triangle t2 = new Triangle(14, 6, 9);
+        Assertions.assertEquals(t1, t2);
+    }
+
+    @Test
+    public void testEquality2() {
+
+        var a = 2;
+        var b = 3;
+        var c = 4;
+        var triangle = new Triangle(a, b, c);
+        var triangle1 = new Triangle(b, a, c);
+        Assertions.assertEquals(triangle, triangle1);
+    }
+    @Test
+    public void testEquality3() {
+
+        var a = 2;
+        var b = 3;
+        var c = 4;
+        var triangle = new Triangle(a, b, c);
+        var triangle1 = new Triangle(c, b, a);
+        Assertions.assertEquals(triangle, triangle1);
     }
 }
