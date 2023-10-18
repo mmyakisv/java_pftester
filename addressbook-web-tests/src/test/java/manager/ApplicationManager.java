@@ -6,6 +6,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class ApplicationManager {
     protected WebDriver driver;
@@ -13,11 +14,18 @@ public class ApplicationManager {
 
     private GroupHelper groups;
 
-    public void init() {
+    public void init(String browser) {
         if (driver == null) {
-            var service = ChromeDriverService.createDefaultService();
-            service.setExecutable("c:/windows/system32/chromedriver.exe");
-            driver = new ChromeDriver(service);
+
+            if ("chrome".equals(browser)){
+                var service = ChromeDriverService.createDefaultService();
+                service.setExecutable("c:/windows/system32/chromedriver.exe");
+                driver = new ChromeDriver(service);
+            } else if ("firefox".equals(browser)) {
+                driver = new FirefoxDriver();
+            } else {
+                throw new IllegalArgumentException(String.format("Unknown browser %s", browser));
+            }
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
             driver.get("http://localhost/addressbook/");
             driver.manage().window().setSize(new Dimension(1918, 1040));
