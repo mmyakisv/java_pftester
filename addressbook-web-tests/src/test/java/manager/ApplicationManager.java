@@ -7,6 +7,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxDriverService;
+import org.openqa.selenium.firefox.GeckoDriverService;
+
+import java.io.File;
 
 public class ApplicationManager {
     protected WebDriver driver;
@@ -22,7 +26,10 @@ public class ApplicationManager {
                 service.setExecutable("c:/windows/system32/chromedriver.exe");
                 driver = new ChromeDriver(service);
             } else if ("firefox".equals(browser)) {
-                driver = new FirefoxDriver();
+                var service = new GeckoDriverService.Builder()
+                .usingDriverExecutable(new File("c:/windows/system32/geckodriver.exe"))
+                        .build();
+                driver = new FirefoxDriver(service);
             } else {
                 throw new IllegalArgumentException(String.format("Unknown browser %s", browser));
             }
