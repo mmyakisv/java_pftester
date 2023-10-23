@@ -21,6 +21,8 @@ public class GroupHelper extends HelperBase {
         return manager.isElementPresent(By.name("selected[]"));
     }
 
+
+
     public void createGroup(GroupData group) {
         openGroupsPage();
         initGroupCreation();

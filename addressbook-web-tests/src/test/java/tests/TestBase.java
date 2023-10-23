@@ -2,6 +2,7 @@ package tests;
 
 import manager.ApplicationManager;
 import org.junit.jupiter.api.BeforeEach;
+import org.openqa.selenium.By;
 
 public class TestBase {
 

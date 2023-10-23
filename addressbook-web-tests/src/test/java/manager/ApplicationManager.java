@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxDriverService;
 import org.openqa.selenium.firefox.GeckoDriverService;
 
 import java.io.File;
@@ -15,9 +14,9 @@ import java.io.File;
 public class ApplicationManager {
     protected WebDriver driver;
     private LoginHelper session;
-
     private GroupHelper groups;
 
+    private ContactHelper contacts;
     public void init(String browser) {
         if (driver == null) {
 
@@ -52,6 +51,13 @@ public class ApplicationManager {
         }
         return groups;
     }
+
+    public ContactHelper contacts() {
+        if (contacts == null) {
+            contacts = new ContactHelper(this);
+        }
+        return contacts;
+    }
     protected boolean isElementPresent(By locator) {
         try {
             driver.findElement(locator);
@@ -60,5 +66,4 @@ public class ApplicationManager {
             return false;
         }
     }
-
 }
