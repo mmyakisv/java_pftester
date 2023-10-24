@@ -22,7 +22,6 @@ public class GroupHelper extends HelperBase {
     }
 
 
-
     public void createGroup(GroupData group) {
         openGroupsPage();
         initGroupCreation();
@@ -60,7 +59,6 @@ public class GroupHelper extends HelperBase {
     private void removeSelectedGroup() {
         click(By.name("delete"));
     }
-
 
 
     private void returnToGroupsPage() {

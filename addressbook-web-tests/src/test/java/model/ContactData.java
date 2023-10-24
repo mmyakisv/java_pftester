@@ -1,6 +1,6 @@
 package model;
 
-public record ContactData (String firstname, String lastname, String mobile, String email) {
+public record ContactData(String firstname, String lastname, String mobile, String email) {
     public ContactData() {
         this("", "", "", "");
     }

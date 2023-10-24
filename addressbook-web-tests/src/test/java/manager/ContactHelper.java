@@ -1,7 +1,6 @@
 package manager;
 
 import model.ContactData;
-import model.GroupData;
 import org.openqa.selenium.By;
 
 public class ContactHelper extends HelperBase {
@@ -24,16 +23,8 @@ public class ContactHelper extends HelperBase {
     private void initContactCreation() {
         click(By.linkText("add new"));
     }
-    private void fillContactForm(ContactData contact) {
-        //manager.driver.findElement(By.name("firstname")).click();
-        //manager.driver.findElement(By.name("firstname")).sendKeys("Test");
-        //manager.driver.findElement(By.name("lastname")).click();
-        //manager.driver.findElement(By.name("lastname")).sendKeys("Testov");
-        //manager.driver.findElement(By.name("mobile")).click();
-        //manager.driver.findElement(By.name("mobile")).sendKeys("79788523695");
-        //manager.driver.findElement(By.name("email")).click();
-        //manager.driver.findElement(By.name("email")).sendKeys("tester@gmail.com");
 
+    private void fillContactForm(ContactData contact) {
         type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());
         type(By.name("mobile"), contact.mobile());
@@ -42,11 +33,11 @@ public class ContactHelper extends HelperBase {
     }
 
     private void submitContactCreation() {
-       click(By.name("submit"));
+        click(By.name("submit"));
     }
 
     private void returnToHomePage() {
-       click(By.linkText("home page"));
+        click(By.linkText("home page"));
     }
 
 
