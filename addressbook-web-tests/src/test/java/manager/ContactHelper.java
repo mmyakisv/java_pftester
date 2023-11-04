@@ -1,7 +1,11 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase {
     public ContactHelper(ApplicationManager manager) {
@@ -22,6 +26,7 @@ public class ContactHelper extends HelperBase {
 
     private void initContactCreation() {
         click(By.linkText("add new"));
+
     }
 
     private void fillContactForm(ContactData contact) {
@@ -41,8 +46,8 @@ public class ContactHelper extends HelperBase {
     }
 
 
-    public void removeContact(ApplicationManager manager) {
-        selectContact();
+    public void removeContact(ContactData contact) {
+        selectContact(contact);
         removeSelectedContact();
     }
 
@@ -51,11 +56,48 @@ public class ContactHelper extends HelperBase {
         manager.driver.switchTo().alert().accept();
     }
 
-    private void selectContact() {
-        click(By.name("selected[]"));
+    private void selectContact(ContactData contact) {
+        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+
     }
 
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
+        selectContact(contact);
+        initContactModification();
+        fillContactForm(modifiedContact);
+        submitContactModification();
+        returnToHomePage();
+
+    }
+
+    private void submitContactModification() {
+        click(By.name("update"));
+    }
+
+    private void initContactModification() {
+        click(By.xpath("//img[@alt='Edit']"));
+    }
+
+
+    public List<ContactData> getList() {
+        var contacts = new ArrayList<ContactData>();
+        var rows = manager.driver.findElements(By.cssSelector("[name=entry]"));
+        for (var row : rows) {
+            var id = row.findElement(By.name("selected[]")).getAttribute("value");
+            var lastname = row.findElement(By.xpath("td[2]")).getText();
+            var firstname = row.findElement(By.xpath("td[3]")).getText();
+            contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
+
+        }
+            return contacts;
+        }
     public int getCount() {
+
         return manager.driver.findElements(By.name("selected[]")).size();
     }
 }
+
+
+
+
+
