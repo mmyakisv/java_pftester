@@ -42,7 +42,7 @@ public class ContactHelper extends HelperBase {
     }
 
     private void returnToHomePage() {
-        click(By.linkText("home page"));
+        click(By.linkText("home"));
     }
 
 
@@ -54,6 +54,7 @@ public class ContactHelper extends HelperBase {
     private void removeSelectedContact() {
         click(By.xpath("//input[@value=\'Delete\']"));
         manager.driver.switchTo().alert().accept();
+        returnToHomePage();
     }
 
     private void selectContact(ContactData contact) {
@@ -63,7 +64,7 @@ public class ContactHelper extends HelperBase {
 
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         selectContact(contact);
-        initContactModification();
+        initContactModification(contact);
         fillContactForm(modifiedContact);
         submitContactModification();
         returnToHomePage();
@@ -74,8 +75,10 @@ public class ContactHelper extends HelperBase {
         click(By.name("update"));
     }
 
-    private void initContactModification() {
-        click(By.xpath("//img[@alt='Edit']"));
+    private void initContactModification(ContactData contact) {
+        click(By.cssSelector(String.format("a[href='edit.php?id=%s']", contact.id())));
+
+
     }
 
 
