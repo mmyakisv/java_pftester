@@ -1,11 +1,16 @@
 package tests;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import common.commonFunctions;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -13,30 +18,25 @@ import java.util.List;
 
 public class ContactCreationTests extends TestBase {
 
-    public static List<ContactData> contactProvider() {
+    public static List<ContactData> contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-        for (var firstname : List.of("", "Test")) {
-            for (var lastname : List.of("", "Testov")) {
-                for (var mobile : List.of("", "79788523695")) {
-                    for (var email : List.of("", "tester@gmail.com")) {
-
-                        result.add(new ContactData()
-                                .withFirstname(firstname)
-                                .withLastname(lastname)
-                                .withMobile(mobile)
-                                .withEmail(email));
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < 5; i++) {
-
-            result.add(new ContactData()
-                    .withFirstname(commonFunctions.randomString(i * 10))
-                    .withLastname(commonFunctions.randomString(i * 10))
-                    .withMobile(commonFunctions.randomString(i * 10))
-                    .withEmail(commonFunctions.randomString(i * 10)));
-        }
+//        for (var firstname : List.of("", "Test")) {
+//            for (var lastname : List.of("", "Testov")) {
+//                for (var mobile : List.of("", "79788523695")) {
+//                    for (var email : List.of("", "tester@gmail.com")) {
+//
+//                        result.add(new ContactData()
+//                                .withFirstname(firstname)
+//                                .withLastname(lastname)
+//                                .withMobile(mobile)
+//                                .withEmail(email));
+//                    }
+//                }
+//            }
+//        }
+        ObjectMapper mapper = new ObjectMapper();
+        var value = mapper.readValue(new File("contacts.json"), new TypeReference<List<ContactData>>() {});
+        result.addAll(value);
         return result;
     }
 
