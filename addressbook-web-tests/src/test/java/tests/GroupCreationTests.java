@@ -48,21 +48,32 @@ public class GroupCreationTests extends TestBase {
         return result;
     }
 
-    @ParameterizedTest
-    @MethodSource("groupProvider")
-    public void CanCreateMultipleGroups(GroupData group) {
-        var oldGroups = app.groups().getList();
+    public static List<GroupData> singleRandomGroup() {
+        return List.of(new GroupData()
+                .withName(commonFunctions.randomString(10))
+                .withHeader(commonFunctions.randomString(20))
+                .withFooter(commonFunctions.randomString(30)));
+    }
+
+
+        @ParameterizedTest
+    @MethodSource("singleRandomGroup")
+    public void CanCreateGroup(GroupData group) {
+        var oldGroups = app.jdbc().getGroupList();
         app.groups().createGroup(group);
-        var newGroups = app.groups().getList();
+        var newGroups = app.jdbc().getGroupList();
         Comparator<GroupData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newGroups.sort(compareById);
+        var maxId = newGroups.get(newGroups.size() - 1).id();
 
         var expectedList = new ArrayList<>(oldGroups);
-        expectedList.add(group.withId(newGroups.get(newGroups.size() - 1).id()).withHeader("").withFooter(""));
+        expectedList.add(group.withId(maxId));
         expectedList.sort(compareById);
         Assertions.assertEquals(newGroups, expectedList);
+
+        var newUiGroups = app.groups().getList();
     }
 
     public static List<GroupData> negativeGroupProvider() {
