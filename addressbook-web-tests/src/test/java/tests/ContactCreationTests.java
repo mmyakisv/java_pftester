@@ -54,10 +54,38 @@ public class ContactCreationTests extends TestBase {
         newContacts.sort(compareById);
 
         var expectedList = new ArrayList<>(oldContacts);
-        expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1).id()).withMobile("").withEmail(""));
+        expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1).id()).withMobile("").withEmail("").withAddress(""));
         expectedList.sort(compareById);
         Assertions.assertEquals(newContacts, expectedList);
     }
+
+    @ParameterizedTest
+    @MethodSource("contactProvider")
+
+    public void contactCreationInGroupTests(ContactData contact) {
+        var oldContacts = app.contacts().getList();
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+        var oldRelated =app.hbm().getContactsInGroup(group);
+        app.contacts().createContact(contact, group);
+        var newRelated =app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+
+        var newContacts = app.contacts().getList();
+
+        Comparator<ContactData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newContacts.sort(compareById);
+
+        var expectedList = new ArrayList<>(oldContacts);
+        expectedList.add(contact.withId(newContacts.get(newContacts.size() - 1).id()).withMobile("").withEmail("").withAddress(""));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newContacts, expectedList);
+    }
+
 }
 
 

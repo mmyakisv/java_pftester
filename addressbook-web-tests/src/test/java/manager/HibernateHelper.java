@@ -1,6 +1,8 @@
 package manager;
 
+import manager.hbm.ContactRecord;
 import manager.hbm.GroupRecord;
+import model.ContactData;
 import model.GroupData;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
@@ -18,9 +20,9 @@ public class HibernateHelper extends HelperBase {
         super(manager);
 
         sessionFactory = new Configuration()
-//              .addAnnotatedClass(Book.class)
+                .addAnnotatedClass(ContactRecord.class)
                 .addAnnotatedClass(GroupRecord.class)
-                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook?zeroDateTimeBehaviour=convertToNull")
                 .setProperty(AvailableSettings.USER, "root")
                 .setProperty(AvailableSettings.PASS, "")
                 .buildSessionFactory();
@@ -45,8 +47,33 @@ public class HibernateHelper extends HelperBase {
         if ("".equals(id)) {
             id = "0";
         }
-
         return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
+    }
+
+    static List<ContactData> convertContactlist(List<ContactRecord> records) {
+        List<ContactData> result = new ArrayList<>();
+        for (var record : records) {
+            result.add(convert(record));
+        }
+        return result;
+    }
+
+    private static ContactData convert(ContactRecord record) {
+        return new ContactData().withId("" + record.id)
+                .withFirstname(record.firstname)
+                .withLastname(record.lastname)
+                .withMobile(record.mobile)
+                .withEmail(record.email)
+                .withAddress(record.address);
+
+    }
+
+    private static ContactRecord convert(ContactData data) {
+        var id = data.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new ContactRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.mobile(), data.email(), data.address());
     }
 
     public List<GroupData> getGroupList() {
@@ -66,6 +93,13 @@ public class HibernateHelper extends HelperBase {
             session.getTransaction().begin();
             session.persist(convert(groupData));
             session.getTransaction().commit();
+        });
+
+    }
+
+    public List<ContactData> getContactsInGroup(GroupData group) {
+        return sessionFactory.fromSession(session -> {
+            return convertContactlist(session.get(GroupRecord.class, group.id()).contacts);
         });
 
     }
