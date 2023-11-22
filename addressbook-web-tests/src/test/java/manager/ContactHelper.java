@@ -38,10 +38,16 @@ public class ContactHelper extends HelperBase {
         fillContactForm(contact);
         submitContactCreation();
         returnToHomePage();
+        selectGroupWithoutContact(group);
         selectContact(contact);
         selectAddGroup(group);
         returnToHomePage();
 
+    }
+
+    private void selectGroupWithoutContact(GroupData group) {
+        click(By.xpath("//select[@name='group']"));
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue("[none]");
     }
 
     private void selectAddGroup(GroupData group) {
@@ -93,6 +99,10 @@ public class ContactHelper extends HelperBase {
 
     }
 
+    private void selectContactToGroup(ContactData contact, GroupData group) {
+        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+
+    }
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         selectContact(contact);
         initContactModification(contact);

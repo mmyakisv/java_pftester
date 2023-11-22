@@ -95,9 +95,9 @@ public class ContactCreationTests extends TestBase {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
         }
         var group = app.hbm().getGroupList().get(0);
-        var oldRelated =app.hbm().getContactsInGroup(group);
+        var oldRelated =app.hbm().getContactsWithoutGroup(contact);
         app.contacts().addContactToGroup(contact, group);
-        var newRelated =app.hbm().getContactsInGroup(group);
+        var newRelated =app.hbm().getContactsWithoutGroup(contact);
         Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
 
         var newContacts = app.contacts().getList();
