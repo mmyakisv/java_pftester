@@ -34,21 +34,21 @@ public class ContactHelper extends HelperBase {
     }
 
     public void addContactToGroup(ContactData contact, GroupData group) {
-        initContactCreation();
-        fillContactForm(contact);
-        submitContactCreation();
+//        initContactCreation();
+//        fillContactForm(contact);
+//        submitContactCreation();
+//        returnToHomePage();
         returnToHomePage();
-        selectGroupWithoutContact(group);
         selectContact(contact);
         selectAddGroup(group);
         returnToHomePage();
 
     }
 
-    private void selectGroupWithoutContact(GroupData group) {
-        click(By.xpath("//select[@name='group']"));
-        new Select(manager.driver.findElement(By.name("group"))).selectByValue("[none]");
-    }
+//    private void selectGroupWithoutContact(GroupData group) {
+//        click(By.xpath("//select[@name='group']"));
+//        new Select(manager.driver.findElement(By.name("group"))).selectByValue("[none]");
+//    }
 
     private void selectAddGroup(GroupData group) {
         new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
@@ -99,10 +99,10 @@ public class ContactHelper extends HelperBase {
 
     }
 
-    private void selectContactToGroup(ContactData contact, GroupData group) {
-        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
-
-    }
+//    private void selectContactToGroup(ContactData contact, GroupData group) {
+//        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+//
+//    }
     public void modifyContact(ContactData contact, ContactData modifiedContact) {
         selectContact(contact);
         initContactModification(contact);

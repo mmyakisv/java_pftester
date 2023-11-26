@@ -101,13 +101,14 @@ public class HibernateHelper extends HelperBase {
             return convertContactlist(session.get(GroupRecord.class, group.id()).contacts);
         });
 
-    }
-
-
-    public List<ContactData> getContactsWithoutGroup(ContactData contact) {
-        return sessionFactory.fromSession(session -> {
-            return convertContactlist(session.get(GroupRecord.class,contact.id()).group);
-        });
 
     }
-}
+
+
+//    public List<ContactData> getContactsWithoutGroup(ContactData contact) {
+//        return sessionFactory.fromSession(session -> {
+//            return convertContactlist(session.get(GroupRecord.class,contact.id()).group);
+//        });
+
+    }
+

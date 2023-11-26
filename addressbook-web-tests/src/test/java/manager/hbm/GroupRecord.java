@@ -31,7 +31,6 @@ public class GroupRecord {
     inverseJoinColumns = @JoinColumn(name = "id"))
 
     public List<ContactRecord> contacts;
-    public List<ContactRecord> group;
 
     public GroupRecord() {
     }
